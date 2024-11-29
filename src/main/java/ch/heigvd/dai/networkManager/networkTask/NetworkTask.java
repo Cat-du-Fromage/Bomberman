@@ -19,12 +19,18 @@ public abstract class NetworkTask implements Serializable
     }
 
     public abstract void execute();
-/*
-    public String networkId()
-    {
-        return NetworkManager.getInstance().getNetworkId();
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
     }
-*/
+
+    /*
+        public String networkId()
+        {
+            return NetworkManager.getInstance().getNetworkId();
+        }
+    */
     public static byte[] Create(NetworkTask request)
     {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -48,10 +54,7 @@ public abstract class NetworkTask implements Serializable
             objectStream.writeObject(request);
             objectStream.flush();
             byte[] buffer = byteStream.toByteArray();
-            System.out.println("DatagramPacket CreateDatagram buffer.length = " + buffer.length);
-            if (buffer.length > 65507) { // Taille maximale pour les données UDP
-                System.out.println("Le paquet est trop grand pour être envoyé via UDP.");
-            }
+            //System.out.println("DatagramPacket CreateDatagram buffer.length = " + buffer.length);
             return new DatagramPacket(buffer, buffer.length, socketAddress.getAddress(), socketAddress.getPort());
         }
         catch (IOException e)

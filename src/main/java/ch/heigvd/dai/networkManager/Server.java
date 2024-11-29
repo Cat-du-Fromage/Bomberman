@@ -18,8 +18,6 @@ import picocli.CommandLine;
 public class Server implements Callable<Integer>
 {
     private DatagramSocket socket;
-    public ConcurrentLinkedQueue<Integer> playersPorts = new ConcurrentLinkedQueue<>();
-
     private ConcurrentLinkedQueue<DatagramPacket> clientCommands = new ConcurrentLinkedQueue<>();
 
     private ConcurrentLinkedQueue<DatagramPacket> packetsToSend = new ConcurrentLinkedQueue<>();
@@ -100,26 +98,6 @@ public class Server implements Callable<Integer>
                     DatagramPacket command = clientCommands.poll();
                     NetworkTask task = NetworkTask.deserialize(command);
                     task.execute();
-                    /*
-                    evaluatePacket(command);
-
-                    String request = new String(command.getData(), command.getOffset(), command.getLength(), StandardCharsets.UTF_8);
-
-                    // Prepare the response
-                    String response = "Hello, client! I'm the server. 👻";
-                    System.err.println("[Server] send: " + response + " From: " + command.getAddress() + ":" + command.getPort());
-                    // Transform the message into a byte array - always specify the encoding
-                    byte[] responseBuffer = response.getBytes(StandardCharsets.UTF_8);
-
-                    DatagramPacket responsePacket = new DatagramPacket(
-                            responseBuffer,
-                            responseBuffer.length,
-                            command.getAddress(),
-                            command.getPort());
-
-                    // Send the packet
-                    socket.send(responsePacket);
-                    */
                 }
             }
         }
