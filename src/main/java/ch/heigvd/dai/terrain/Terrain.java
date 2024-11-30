@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Terrain //extends JPanel
+public class Terrain
 {
-    //public final int GAME_WIDTH = 1024;
-    //public final int GAME_HEIGHT = 512;
     public int GAME_WIDTH = 1024;
     public int GAME_HEIGHT = 512;
     public final int TILE_SIZE = 32;
@@ -41,8 +39,8 @@ public class Terrain //extends JPanel
     {
         playerStarts[0] = tiles[TILE_WIDTH + 1].getCenter();
         playerStarts[1] = tiles[2*TILE_WIDTH-2].getCenter();
-        playerStarts[2] = tiles[TILE_COUNT-(2*TILE_WIDTH)+2].getCenter();
-        playerStarts[3] = tiles[TILE_COUNT-TILE_WIDTH-1].getCenter();
+        playerStarts[2] = tiles[TILE_COUNT-(2*TILE_WIDTH)+1].getCenter();
+        playerStarts[3] = tiles[TILE_COUNT-TILE_WIDTH-2].getCenter();
     }
 
     public TileType[] TilesType()
@@ -95,21 +93,6 @@ public class Terrain //extends JPanel
         {
             Point coord = tiles[i].coord;
             switch (tilesType[i])
-            {
-                case NONE -> tiles[i] = new Tile(TILE_SIZE, coord.x, coord.y);
-                case WALL -> tiles[i] = new WallTile(TILE_SIZE, coord.x, coord.y);
-                case DIRT -> tiles[i] = new DirtTile(TILE_SIZE, coord.x, coord.y);
-            }
-        }
-    }
-
-    public void setTiles(int[] tilesType)
-    {
-        for (int i = 0; i < TILE_COUNT; i++)
-        {
-            Point coord = tiles[i].coord;
-            TileType tileType = TileType.values()[tilesType[i]];
-            switch (tileType)
             {
                 case NONE -> tiles[i] = new Tile(TILE_SIZE, coord.x, coord.y);
                 case WALL -> tiles[i] = new WallTile(TILE_SIZE, coord.x, coord.y);
@@ -205,8 +188,6 @@ public class Terrain //extends JPanel
         g.setColor(Color.red);
         Point location = tiles[index].getPosition();
         Point center = new Point(location.x + 2, location.y + 20);
-        //Point center2 = tiles[index].getPosition();
-        //g.drawOval(center2.x, center2.y, 8, 16);
         g.drawString(String.valueOf(index), center.x, center.y);
     }
 

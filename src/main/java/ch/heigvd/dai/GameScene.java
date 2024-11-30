@@ -26,15 +26,12 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
     public GameScene(int width, int height)
     {
         terrain = new Terrain();
-        //terrain.initStarts();
         this.setFocusable(true);
         this.setSize(width, height);
         this.setPreferredSize(new Dimension(width, height));
         this.setBackground(Color.green);
         this.setVisible(true);
         this.addKeyListener(this);
-        // Schedule repaint after initialization
-        //SwingUtilities.invokeLater(this::repaint);
     }
 
     public Player[] Players() {return players;}
@@ -46,7 +43,6 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
         if(NetworkManager.getInstance().isServer())
         {
             initializePlayers();
-            //terrain = new Terrain();
             timer = new Timer(DELAY, this);
             timer.start();
             this.revalidate();
@@ -97,8 +93,7 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
 
     public void draw(Graphics2D g)
     {
-        //System.out.println("GameScene draw");
-        terrain.draw((Graphics2D)g);
+        terrain.draw(g);
         for (Player player : players)
         {
             player.draw(g);
@@ -108,10 +103,8 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
     @Override
     public void paintComponent(Graphics g)
     {
-        //System.out.println("GameScene paintComponent");
         super.paintComponent(g);
         draw((Graphics2D)g);
-        //terrain.draw((Graphics2D)g);
     }
 
     @Override
