@@ -27,7 +27,9 @@ public class NetworkManager
     private InetSocketAddress serverSocketAddress;
 
     private Map<String, InetSocketAddress> clients = new HashMap<>();
-
+//╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+//║                                          ◆◆◆◆◆◆ CONSTRUCTORS ◆◆◆◆◆◆                                        ║
+//╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
     private NetworkManager(String networkId)
     {
         this.networkId = networkId;
@@ -51,11 +53,11 @@ public class NetworkManager
         this.client = client;
         isClient = true;
         this.serverSocketAddress = serverSocketAddress;
-
-        //ConnectToServerTask connectionTask = new ConnectToServerTask(clientKey, value);
-
         System.out.println("NetworkManager created as Client: " + isClient);
     }
+//╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+//║                                            ◆◆◆◆◆◆ GETTERS ◆◆◆◆◆◆                                           ║
+//╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
 
     public boolean isServer() {return isServer;}
 
@@ -68,10 +70,29 @@ public class NetworkManager
         return clients.putIfAbsent(key, value) == null;
     }
 
+//╔════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+//║                                            ◆◆◆◆◆◆ METHODS ◆◆◆◆◆◆                                           ║
+//╚════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+    //╓────────────────────────────────────────────────────────────────────────────────────────────────────────────╖
+    //║ ◈◈◈◈◈◈ Client Methods ◈◈◈◈◈◈                                                                               ║
+    //╙────────────────────────────────────────────────────────────────────────────────────────────────────────────╜
+
     public void sendToServer(NetworkTask task)
     {
-        if(isServer()) return;
+        if(!isClient) return;
         client.sendPacket(NetworkTask.CreateDatagram(task, serverSocketAddress));
+    }
+
+    //╓────────────────────────────────────────────────────────────────────────────────────────────────────────────╖
+    //║ ◈◈◈◈◈◈ Server Methods ◈◈◈◈◈◈                                                                               ║
+    //╙────────────────────────────────────────────────────────────────────────────────────────────────────────────╜
+
+    public void onPlayerConnection(String key, InetSocketAddress value)
+    {
+        if(!isServer || clients.size() >= MAX_PLAYERS ||!tryAddPlayer(key, value)) return;
+        System.out.println("NetworkManager Server: onPlayerConnection " + key);
+        GameManager.getInstance().addPlayer(key);
     }
 
     public void sendToClients(NetworkTask task)
@@ -82,9 +103,7 @@ public class NetworkManager
             if(entry.getKey().equals(networkId)) continue;
             InetSocketAddress socketAddress = entry.getValue();
             DatagramPacket packet = NetworkTask.CreateDatagram(task, socketAddress);
-            //DatagramPacket packet = new DatagramPacket(buffer, buffer.length, socketAddress.getAddress(), socketAddress.getPort());
             server.sendPacket(packet);
-            //envoie à chaque client une réponse!
         }
     }
 
@@ -103,12 +122,7 @@ public class NetworkManager
         server.sendPacket(NetworkTask.CreateDatagram(task, clients.get(clientKey)));
     }
 
-    public void onPlayerConnection(String key, InetSocketAddress value)
-    {
-        if(!isServer || clients.size() >= MAX_PLAYERS ||!tryAddPlayer(key, value)) return;
-        System.out.println("NetworkManager Server: onPlayerConnection " + key);
-        GameManager.getInstance().addPlayer(key);
-    }
+
 
     @Override
     public String toString() {

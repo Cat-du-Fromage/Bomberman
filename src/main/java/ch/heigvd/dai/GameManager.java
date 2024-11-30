@@ -42,8 +42,6 @@ public class GameManager extends JFrame
         InitializeLayeredPane();
 
         changeGameState(EGameState.MAIN_MENU);
-
-        //SwingUtilities.invokeLater(gameScene::repaint);
         System.out.println("Game Manager Created");
     }
 
@@ -76,6 +74,11 @@ public class GameManager extends JFrame
         this.setVisible(true);
     }
 
+    public MainMenu getMainMenu()
+    {
+        return mainMenu;
+    }
+
     public GameScene getGameScene(){return gameScene;}
 
     public int numPlayer()
@@ -91,8 +94,6 @@ public class GameManager extends JFrame
     public int getPlayerIndex()
     {
         return playerIndex;
-        //if(!playersKeyIndex.containsKey(playerId)) return -1;
-        // return playersKeyIndex.get(playerId);
     }
 
     public int getPlayerIndex(String playerId)
@@ -113,11 +114,6 @@ public class GameManager extends JFrame
             if(entry.getValue() == playerIndex) return entry.getKey();
         }
         return null;
-    }
-
-    public MainMenu getMainMenu()
-    {
-        return mainMenu;
     }
 
     public void addPlayer(String id)
@@ -169,6 +165,9 @@ public class GameManager extends JFrame
 
     }
 
+    //┌────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    //│  ◇◇◇◇◇◇ Server Only ◇◇◇◇◇◇                                                                                 │
+    //└────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     public void changeGameState(EGameState gameState)
     {
         this.gameState = gameState;
@@ -178,6 +177,7 @@ public class GameManager extends JFrame
         }
         else if (gameState == EGameState.GAME)
         {
+            if(!NetworkManager.getInstance().isServer()) return;
             gameScene.onEnable();
             showGameScene();
             StartGameTask task = new StartGameTask(gameScene.Terrain().getTileTypeByteIndices(), playersKeyIndex.size());
@@ -185,6 +185,9 @@ public class GameManager extends JFrame
         }
     }
 
+    //┌────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    //│  ◇◇◇◇◇◇ Client Only ◇◇◇◇◇◇                                                                                 │
+    //└────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     public void clientEnterGameScene(byte[] tileTypes, int numPlayers)
     {
         if(!NetworkManager.getInstance().isClient()) return;

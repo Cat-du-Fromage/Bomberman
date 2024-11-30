@@ -118,7 +118,7 @@ public class MainMenu extends JPanel implements ActionListener
         }
         else if (e.getSource() == readyButton)
         {
-            System.out.println("Ready clicked for index : " + gameManager.getPlayerIndex());
+            //System.out.println("Ready clicked for index : " + gameManager.getPlayerIndex());
             onReadyClicked();
         }
     }

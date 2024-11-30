@@ -63,7 +63,6 @@ public class Server implements Callable<Integer>
         try
         {
             System.out.println("[Server] Listening for unicast messages on port " + serverPort + "...");
-
             while (!socket.isClosed())
             {
                 // Create a buffer for the incoming request
@@ -86,7 +85,7 @@ public class Server implements Callable<Integer>
 
     public Integer serverProcess()
     {
-        try //(DatagramSocket socket = new DatagramSocket(serverPort))
+        try
         {
             System.out.println("[Server] Processing for unicast messages on port " + serverPort + "...");
 
@@ -110,10 +109,9 @@ public class Server implements Callable<Integer>
 
     private Integer serverSendPackets()
     {
-        try //(DatagramSocket socket = new DatagramSocket(serverPort))
+        try
         {
             System.out.println("[Server] Sending packets on port " + serverPort);
-
             while (!socket.isClosed())
             {
                 if(packetsToSend.isEmpty()) continue;

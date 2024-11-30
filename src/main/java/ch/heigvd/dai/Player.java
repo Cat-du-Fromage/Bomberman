@@ -15,7 +15,7 @@ public class Player implements Serializable
     Point position;
     Point velocity;
 
-    private int baseSpeed = 1;
+    private int baseSpeed = 2;
     private int speedMultiplier = 1;
 
     public Player(Point startPosition, Color color)
@@ -25,16 +25,24 @@ public class Player implements Serializable
         velocity = new Point(0,0);
     }
 
+    //┌────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    //│  ◇◇◇◇◇◇ Server Only OR 'PlayersPositionSyncTask' commands ◇◇◇◇◇◇                                           │
+    //└────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     public void setPosition(Point newPosition)
     {
         position = newPosition;
     }
 
+    //┌────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+    //│  ◇◇◇◇◇◇ Server Only OR 'ChangeVelocityTask' commands ◇◇◇◇◇◇                                                │
+    //└────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     public void setVelocity(Point velocity)
     {
         this.velocity = velocity;
     }
 
+    //Oui il y a de la répétitions..
+    //Si il y a encore ces répétitions de code c'est qu'on a pas eu le temps de refactoriser avant le rendu
     private boolean setTranslationX(Terrain terrain)
     {
         if(velocity.x == 0) return false;

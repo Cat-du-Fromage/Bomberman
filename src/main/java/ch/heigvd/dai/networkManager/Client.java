@@ -104,7 +104,7 @@ public class Client implements Callable<Integer>
 
                 // Receive the packet - this is a blocking call
                 socket.receive(requestPacket);
-                System.out.println("[Client] Received serverCommands!");
+                //System.out.println("[Client] Received serverCommands!");
                 serverCommands.add(requestPacket);
             }
         }
@@ -125,11 +125,9 @@ public class Client implements Callable<Integer>
                 if(serverCommands.isEmpty()) continue;
                 while (!serverCommands.isEmpty())
                 {
-
                     DatagramPacket command = serverCommands.poll();
                     NetworkTask task = NetworkTask.deserialize(command);
-                    System.out.println("[Client] Process serverCommands : " + task.toString());
-
+                    //System.out.println("[Client] Process serverCommands : " + task.toString());
                     task.execute();
                 }
             }
@@ -172,9 +170,7 @@ public class Client implements Callable<Integer>
             ConnectToServerTask connectionTask = new ConnectToServerTask(clientKey, clientSocketAddress);
 
             // Sérialiser l'objet en un tableau d'octets
-            //byte[] buffer =  NetworkTask.Create(connectionTask);
             DatagramPacket packet = NetworkTask.CreateDatagram(connectionTask, serverAddress, port);
-            //DatagramPacket packet = new DatagramPacket(buffer, buffer.length, serverAddress, port);
             socket.send(packet);
         }
         catch (IOException e)
