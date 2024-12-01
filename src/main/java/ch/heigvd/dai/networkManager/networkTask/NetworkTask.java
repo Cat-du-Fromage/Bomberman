@@ -24,13 +24,7 @@ public abstract class NetworkTask implements Serializable
     public String toString() {
         return getClass().getSimpleName();
     }
-
-    /*
-        public String networkId()
-        {
-            return NetworkManager.getInstance().getNetworkId();
-        }
-    */
+    
     public static byte[] Create(NetworkTask request)
     {
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();

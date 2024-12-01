@@ -76,6 +76,7 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
         repaint();
     }
 
+    //update players logics
     private void updatePlayers()
     {
         int counter = 0;
@@ -87,6 +88,7 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
         sendPlayersPositionToClients();
     }
 
+    //update visuals
     public void draw(Graphics2D g)
     {
         terrain.draw(g);
@@ -110,6 +112,12 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
 
     @Override
     public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_SPACE)
+        {
+            //placer bombe
+            int playerIndex = GameManager.getInstance().getPlayerIndex();
+            Player playerWhoPlacedBomb = players[playerIndex];
+        }
         switch (e.getKeyCode()) {
             case KeyEvent.VK_W :
                 movePlayer(new Point(0,-1));

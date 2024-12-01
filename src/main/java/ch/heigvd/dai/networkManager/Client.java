@@ -97,7 +97,7 @@ public class Client implements Callable<Integer>
             while (!socket.isClosed())
             {
                 // Create a buffer for the incoming request
-                byte[] requestBuffer = new byte[4096];
+                byte[] requestBuffer = new byte[1024];
 
                 // Create a packet for the incoming request
                 DatagramPacket requestPacket = new DatagramPacket(requestBuffer, requestBuffer.length);
@@ -141,7 +141,7 @@ public class Client implements Callable<Integer>
 
     private Integer clientSendPackets()
     {
-        try //(DatagramSocket socket = new DatagramSocket(serverPort))
+        try
         {
             System.out.println("[Client] Sending packets on port " + clientPort + "; to: " + port);
 
