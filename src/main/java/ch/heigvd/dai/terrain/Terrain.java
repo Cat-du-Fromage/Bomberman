@@ -190,24 +190,4 @@ public class Terrain
         Point center = new Point(location.x + 2, location.y + 20);
         g.drawString(String.valueOf(index), center.x, center.y);
     }
-
-//╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-//║                                               ◆◆◆◆◆◆ NETCODE ◆◆◆◆◆◆                                                ║
-//╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
-
-    public void OnReceiveUpdateFromServer(int x, int y, int tileTypeIndex)
-    {
-        //if(GameManager.isClient() || GameManager.isHost())
-        {
-            // on reçoit :
-            // coord de la case
-            // nouvel état de la case
-        }
-    }
-
-    public void SendUpdateToClients()
-    {
-        //if(GameManager.isServer())
-        // Doit pouvoir envoyer soit une case soit plusieurs (voire tout le terrain)
-    }
 }

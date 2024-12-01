@@ -18,6 +18,9 @@ public class Player implements Serializable
     private int baseSpeed = 2;
     private int speedMultiplier = 1;
 
+    private int bombAmount = 1;
+    private int bombAvailable = 1;
+
     public Player(Point startPosition, Color color)
     {
         this.color = color;

@@ -114,16 +114,6 @@ public class NetworkManager
         server.sendPacket(NetworkTask.CreateDatagram(task, clients.get(key)));
     }
 
-    public void sendToClient(int index, NetworkTask task)
-    {
-        if(!isServer) return;
-        String clientKey = GameManager.getInstance().getPlayerKey(index);
-        System.out.println("Server: sendToClient packet");
-        server.sendPacket(NetworkTask.CreateDatagram(task, clients.get(clientKey)));
-    }
-
-
-
     @Override
     public String toString() {
         return getClass().getSimpleName();

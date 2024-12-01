@@ -4,7 +4,6 @@ import ch.heigvd.dai.networkManager.NetworkManager;
 import ch.heigvd.dai.networkManager.networkTask.ChangeVelocityTask;
 import ch.heigvd.dai.networkManager.networkTask.PlayersPositionSyncTask;
 import ch.heigvd.dai.terrain.Terrain;
-import ch.heigvd.dai.terrain.TileType;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,9 +39,10 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
     //Sever Only
     public void onEnable()
     {
+        //only the server can update
         if(NetworkManager.getInstance().isServer())
         {
-            initializePlayers();
+            initializePlayers(GameManager.getInstance().numPlayer());
             timer = new Timer(DELAY, this);
             timer.start();
             this.revalidate();
@@ -54,16 +54,12 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
     {
         if(!NetworkManager.getInstance().isClient()) return;
         terrain.setTiles(tileTypes);
-        players = new Player[numPlayers];
-        for(int i = 0; i < numPlayers; i++)
-        {
-            players[i] = new Player(terrain.getPlayerStarts()[i], colors[i]);
-        }
+        initializePlayers(numPlayers);
     }
 
-    private void initializePlayers()
+    private void initializePlayers(int numPlayers)
     {
-        players = new Player[GameManager.getInstance().numPlayer()];
+        players = new Player[numPlayers];
         Point[] playerStarts = terrain.getPlayerStarts();
         for (int i = 0; i < players.length; i++)
         {
@@ -88,7 +84,7 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
             counter += player.update(terrain) ? 1 : 0;
         }
         if(counter == 0) return;
-        sendPlayersToClients();
+        sendPlayersPositionToClients();
     }
 
     public void draw(Graphics2D g)
@@ -165,7 +161,7 @@ public class GameScene extends JPanel implements ActionListener, KeyListener
         repaint();
     }
 
-    private void sendPlayersToClients()
+    private void sendPlayersPositionToClients()
     {
         if(!NetworkManager.getInstance().isServer()) return;
         Point[] playerCoords = new Point[players.length];
