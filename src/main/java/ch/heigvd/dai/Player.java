@@ -29,7 +29,7 @@ public class Player implements Serializable
     }
 
     //┌────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-    //│  ◇◇◇◇◇◇ Server Only OR 'PlayersPositionSyncTask' commands ◇◇◇◇◇◇                                           │
+    //│  ◇◇◇◇◇◇ Client Only via 'PlayersPositionSyncTask' commands ◇◇◇◇◇◇                                          │
     //└────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
     public void setPosition(Point newPosition)
     {
